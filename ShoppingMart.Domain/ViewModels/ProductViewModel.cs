@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ShoppingMart.Domain.Dtos
+namespace ShoppingMart.Domain.ViewModel
+
 {
     public class ProductViewModel
     {

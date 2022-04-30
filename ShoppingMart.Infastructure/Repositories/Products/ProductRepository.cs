@@ -1,5 +1,7 @@
-﻿using ShoopingMart.Domain;
-using ShoppingMart.Domain.Dtos;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
+using ShoppingMart.Domain;
+using ShoppingMart.Domain.ViewModel;
 using ShoppingMart.Domain.Products;
 using ShoppingMart.Infastructure.Data;
 using System;
@@ -12,30 +14,46 @@ namespace ShoppingMart.Infastructure.Repositories.Products
 {
     public class ProductRepository : BaseRepository<Product>, IProductRepository
     {
-        //Constructor
-        public ProductRepository(ShoppingMartDbContext context) : base(context)
-        {
 
+        protected readonly IMapper _mapper;
+        public ProductRepository(ShoppingMartDbContext context, IMapper mapper) : base(context)
+        {
+            _mapper = mapper;
         }
 
-        public Task<ProductViewModel> CreateUpdateProduct(ProductViewModel productViewModel)
+        public async Task<bool> DeleteProduct(Guid productId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                Product product = await DbContext.Products.Where(p => p.Id == productId).FirstOrDefaultAsync();
+                if (product is null) return false;
+                DbContext.Products.Remove(product);
+                await DbContext.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception)
+            {
+
+                return false;
+            }
         }
 
-        public Task<bool> DeleteProduct(Guid productId)
+        public async Task<ProductViewModel> GetProduct(Guid productId)
         {
-            throw new NotImplementedException();
+            Product product = await DbContext.Products
+                .Where(p => p.Id == productId && p.Deleted != true)
+                .Include(p => p.Category)
+                .FirstOrDefaultAsync();
+            return _mapper.Map<ProductViewModel>(product);
         }
 
-        public Task<ProductViewModel> GetProduct(Guid productId)
+        public async Task<List<ProductViewModel>> GetProducts()
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<IEnumerable<ProductViewModel>> GetProducts()
-        {
-            throw new NotImplementedException();
+            List<Product> productList = await DbContext.Products
+                .Where(p => p.Deleted != true)
+                .Include(p => p.Category).ToListAsync();
+            var productViewModel = _mapper.Map<List<ProductViewModel>>(productList);
+            return productViewModel;
         }
     }
 }

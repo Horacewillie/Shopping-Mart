@@ -1,4 +1,4 @@
-﻿using ShoopingMart.Domain;
+﻿using ShoppingMart.Domain;
 using ShoppingMart.Domain.Base;
 using System;
 using System.Collections.Generic;
