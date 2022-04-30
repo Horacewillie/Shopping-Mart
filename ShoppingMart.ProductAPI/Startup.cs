@@ -1,3 +1,4 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -5,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using ShoppingMart.Domain.Profiles;
 using ShoppingMart.Infastructure.Data;
 using ShoppingMart.Infastructure.Model;
 using System;
@@ -26,14 +28,16 @@ namespace ShoppingMart.ProductAPI
         public void ConfigureServices(IServiceCollection services)
         {
 
-            //services.AddDbContext<ShoppingMartDbContext>(options =>
-            //{
-            //    options.UseSqlServer(GetShoppingMartDbConnection());
-            //});
+           
             services.AddDbContext<ShoppingMartDbContext>(options =>
             {
                 options.UseSqlServer(GetShoppingMartDbConnection());
             });
+
+            IMapper mapper = MappingConfig.RegisterMap().CreateMapper();
+            services.AddSingleton(mapper);
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
