@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using ShoopingMart.Domain;
-using ShoppingMart.Domain.Dtos;
+using ShoppingMart.Domain;
+using ShoppingMart.Domain.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;

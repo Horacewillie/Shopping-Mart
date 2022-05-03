@@ -13,7 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShoppingMart.Infastructure"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShoppingMart.Domain", "ShoppingMart.Domain\ShoppingMart.Domain.csproj", "{1030E64B-7EF7-4E9C-B5CB-6EFE34BE82EC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShoppingMart.ProductAPI", "ShoppingMart.ProductAPI\ShoppingMart.ProductAPI.csproj", "{C9211CE2-F6B4-4AC3-A318-8481BFA57C57}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShoppingMart.ProductAPI", "ShoppingMart.ProductAPI\ShoppingMart.ProductAPI.csproj", "{C9211CE2-F6B4-4AC3-A318-8481BFA57C57}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShoppingMart.Logic", "ShoppingMart.Logic\ShoppingMart.Logic.csproj", "{F58DEBB8-2C5E-472C-80FB-CA334B6FA307}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,6 +39,10 @@ Global
 		{C9211CE2-F6B4-4AC3-A318-8481BFA57C57}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C9211CE2-F6B4-4AC3-A318-8481BFA57C57}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C9211CE2-F6B4-4AC3-A318-8481BFA57C57}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F58DEBB8-2C5E-472C-80FB-CA334B6FA307}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F58DEBB8-2C5E-472C-80FB-CA334B6FA307}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F58DEBB8-2C5E-472C-80FB-CA334B6FA307}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F58DEBB8-2C5E-472C-80FB-CA334B6FA307}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -46,6 +52,7 @@ Global
 		{AC77C686-D24A-4068-B105-2F8EB44BF150} = {122DCE7D-9EAB-4498-86AF-96EDC228F73A}
 		{1030E64B-7EF7-4E9C-B5CB-6EFE34BE82EC} = {122DCE7D-9EAB-4498-86AF-96EDC228F73A}
 		{C9211CE2-F6B4-4AC3-A318-8481BFA57C57} = {122DCE7D-9EAB-4498-86AF-96EDC228F73A}
+		{F58DEBB8-2C5E-472C-80FB-CA334B6FA307} = {122DCE7D-9EAB-4498-86AF-96EDC228F73A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2CCE09E0-AD4A-4450-AEFC-91A449399386}

@@ -31,11 +31,6 @@ namespace ShoppingMart.Infastructure.Repositories
         public void UpdateEntity(T entity) =>
             DbContext.Set<T>().Update(entity);
 
-        public void DisposeContext()
-        {
-            ClearChangeTracker();
-            DbContext.Dispose();
-        }
 
         public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default, bool clearChangeTracker = false)
         {
@@ -53,6 +48,12 @@ namespace ShoppingMart.Infastructure.Repositories
             }
         }
 
-       
+        public void DisposeContext()
+        {
+            ClearChangeTracker();
+            DbContext.Dispose();
+        }
+
+
     }
 }

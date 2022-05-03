@@ -14,7 +14,6 @@ namespace ShoppingMart.Domain.ViewModel
             public string Description { get; set; }
             public Guid CategoryForeignKey { get; set; }
             public Category Category { get; set; }
-
             public string ImageUrl { get; set; }
 
     }

@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using ShoppingMart.Domain;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ShoppingMart.Domain;
 using Microsoft.EntityFrameworkCore;
-using ShoopingMart.Domain;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace ShoppingMart.Infastructure.Data
