@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using ShoopingMart.Domain;
+using ShoppingMart.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -25,7 +25,7 @@ namespace ShoppingMart.Infastructure.Repositories.Products
         {
             try
             {
-                Product product = await DbContext.Products.Where(p => p.Id == productId).FirstOrDefaultAsync();
+                Product product = await DbContext.Products.FirstOrDefaultAsync(p => p.Id == productId);
                 if (product is null) return false;
                 DbContext.Products.Remove(product);
                 await DbContext.SaveChangesAsync();
@@ -33,7 +33,6 @@ namespace ShoppingMart.Infastructure.Repositories.Products
             }
             catch (Exception)
             {
-
                 return false;
             }
         }

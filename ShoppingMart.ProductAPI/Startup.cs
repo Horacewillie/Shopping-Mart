@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using ShoppingMart.Domain.Profiles;
+using ShoppingMart.Infastructure;
 using ShoppingMart.Infastructure.Data;
 using ShoppingMart.Infastructure.Model;
 using System;
@@ -38,6 +39,8 @@ namespace ShoppingMart.ProductAPI
             services.AddSingleton(mapper);
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
+            InfastructureProvider.ConfigureServices(services, Configuration);
+
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -45,17 +48,18 @@ namespace ShoppingMart.ProductAPI
             });
         }
 
-       
+
+        //private string GetShoppingMartDbConnection() => IsLive ? AppConfig.ShoppingMartDbConnection
+        //    : Configuration.GetConnectionString("ShoppingMartDb");
+
         private string GetShoppingMartDbConnection() => IsLive ? AppConfig.ShoppingMartDbConnection
-            : Configuration.GetConnectionString("ShoppingMartDb");
-       
+            : Configuration.GetSection("ShoppingMartDb").Get<ShoppingMartConfig>().DbConnectionString;
+
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             var result = Environment.GetEnvironmentVariable("AppEnviron");
-            Console.WriteLine("Hery");
-            Console.WriteLine(result);
 
             bool IsDev = string.Equals(Environment.GetEnvironmentVariable("AppEnviron"), "dev", StringComparison.OrdinalIgnoreCase);
 
