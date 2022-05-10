@@ -1,16 +1,21 @@
 using AutoMapper;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using ShoppingMart.Domain.Profiles;
 using ShoppingMart.Infastructure;
 using ShoppingMart.Infastructure.Data;
 using ShoppingMart.Infastructure.Model;
+using ShoppingMart.Logic.Managers;
 using System;
+using WatchDog;
+using WatchDog.src.Enums;
 
 namespace ShoppingMart.ProductAPI
 {
@@ -21,15 +26,14 @@ namespace ShoppingMart.ProductAPI
             Configuration = configuration;
         }
 
-        public bool IsLive => !AppConfig.IsDev;
+        private static bool IsLive => !AppConfig.IsDev;
 
-        public IConfiguration Configuration { get; }
+        private IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
 
-           
             services.AddDbContext<ShoppingMartDbContext>(options =>
             {
                 options.UseSqlServer(GetShoppingMartDbConnection());
@@ -38,22 +42,46 @@ namespace ShoppingMart.ProductAPI
             IMapper mapper = MappingConfig.RegisterMap().CreateMapper();
             services.AddSingleton(mapper);
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-
+            services.AddScoped<ProductManager>();
             InfastructureProvider.ConfigureServices(services, Configuration);
+            services.AddWatchDogServices(opt =>
+            {
+                opt.IsAutoClear = true;
+                opt.ClearTimeSchedule = WatchDogAutoClearScheduleEnum.Monthly;
+            });
 
-            services.AddControllers();
+            services.AddControllers()
+                .AddFluentValidation(x =>
+                {
+                    x.RegisterValidatorsFromAssembly(typeof(Startup).Assembly);
+                });
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ShoppingMart.ProductAPI", Version = "v1" });
             });
+            services.AddLogging();
+            services.AddSingleton(typeof(ILogger), typeof(Logger<Startup>));
+
+            var configuration = new ConfigurationBuilder()
+                    .AddUserSecrets<ShoppingMartConfig>()
+                    .Build();
+
+
         }
 
 
         //private string GetShoppingMartDbConnection() => IsLive ? AppConfig.ShoppingMartDbConnection
-        //    : Configuration.GetConnectionString("ShoppingMartDb");
+        //    : Configuration.GetConnectionString("ShoppingMartConfig");
 
         private string GetShoppingMartDbConnection() => IsLive ? AppConfig.ShoppingMartDbConnection
-            : Configuration.GetSection("ShoppingMartDb").Get<ShoppingMartConfig>().DbConnectionString;
+            : Configuration.GetSection("ShoppingMartConfig").Get<ShoppingMartConfig>().DbConnectionString;
+
+
+        //This way of accessing environmental variable is valid
+
+        //private string GetShoppingMartDbConnection() => IsLive ? AppConfig.ShoppingMartDbConnection
+        //    : Configuration["ShoppingMartConfig:DbConnectionString"];
+
 
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -69,6 +97,11 @@ namespace ShoppingMart.ProductAPI
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ShoppingMart.ProductAPI v1"));
             }
+            app.UseWatchDog(opt =>
+            {
+                opt.WatchPageUsername = Configuration["ShoppingMartConfig:WatchPageUsername"];
+                opt.WatchPagePassword = Configuration["ShoppingMartConfig:WatchPagePassword"];
+            });
 
             app.UseHttpsRedirection();
 

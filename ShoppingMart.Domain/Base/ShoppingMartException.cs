@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FluentValidation.Results;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -27,7 +28,7 @@ namespace ShoppingMart.Domain.Base
 
         public Dictionary<string, string> Errors { get; private set; } = new Dictionary<string, string>();
 
-        public HttpStatusCode HttpStatusCode { get; set; }
+        private HttpStatusCode HttpStatusCode { get; set; }
 
         public ShoppingMartException(string message, HttpStatusCode httpStatusCode) : base(message)
         {
@@ -37,9 +38,23 @@ namespace ShoppingMart.Domain.Base
 
         public ShoppingMartException(Dictionary<string, string> errors, string message = null) : base(message ?? "One or more error occured")
         {
-            if(errors != null)
+            if (errors != null)
             {
                 Errors = errors;
+            }
+        }
+
+        public ShoppingMartException(IList<ValidationFailure> errors,
+        string errormessage = "One or more errored occurred") : base(errormessage)
+        {
+            if (errors == null)
+                throw new ArgumentException("Validation errors cannot be null");
+            Errors.Clear();
+            foreach (var failure in errors)
+            {
+                if (Errors.ContainsKey(failure.PropertyName))
+                    continue;
+                Errors.Add(failure.PropertyName, failure.ErrorMessage);
             }
         }
     }
