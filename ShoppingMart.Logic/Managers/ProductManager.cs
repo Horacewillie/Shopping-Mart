@@ -1,6 +1,7 @@
 ﻿using ShoppingMart.Domain;
 using ShoppingMart.Domain.Base;
 using ShoppingMart.Domain.Products;
+using ShoppingMart.Domain.ViewModel;
 using ShoppingMart.Infastructure.Repositories.Products;
 using System;
 using System.Collections.Generic;
@@ -18,9 +19,17 @@ namespace ShoppingMart.Logic.Managers
             _productRepository = productRepository;
         }
 
-        public async Task<Envelope<Product>> GetProducts()
+        public async Task<List<ProductViewModel>> GetProducts()
         {
-            var product = 
+            var products = await _productRepository.GetProducts();
+            return products;
+        }
+
+        public async Task<ProductViewModel> GetProduct(Guid productId)
+        {
+            var product = await _productRepository.GetProduct(productId);
+            _ = product ?? throw new ShoppingMartException("Product not found");
+            return product;
         }
     }
 }

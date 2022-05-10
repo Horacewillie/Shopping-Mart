@@ -11,7 +11,6 @@ namespace ShoppingMart.ProductAPI.Controllers
 {
     public class BaseController : ControllerBase
     {
-
         private readonly ILogger _logger;
 
         public BaseController(ILogger logger)
@@ -19,16 +18,17 @@ namespace ShoppingMart.ProductAPI.Controllers
             _logger = logger;
         }
 
-
         protected IActionResult Ok<T>(T result)
         {
-            if (result?.GetType() == typeof(Envelope<>)) return base.Ok(result);
+            if (result?.GetType() == typeof(Envelope<>)) 
+                return base.Ok(result);
             return base.Ok(Envelope.Ok(result));
         }
 
         protected IActionResult Done<T>(Envelope<T> envelope)
         {
-            if (envelope.Status == ResultStatus.Failed) return BadRequest(envelope);
+            if (envelope.Status == ResultStatus.Failed) 
+                return BadRequest(envelope);
             return base.Ok(envelope);
         }
 
@@ -40,6 +40,16 @@ namespace ShoppingMart.ProductAPI.Controllers
         protected IActionResult Failure(Dictionary<string, string> errors, string message = "One or more errors occured")
         {
             return BadRequest(Envelope.Error(errors, message));
+        }
+
+        protected IActionResult NotFoundError(string errorMessage = "Item not found!")
+        {
+            return NotFound(Envelope.Error(errorMessage));
+        }
+
+        protected IActionResult Failure(string errorMessage)
+        {
+            return BadRequest(Envelope.Error(errorMessage));
         }
 
         protected void LogInfo(string message, object data = null)

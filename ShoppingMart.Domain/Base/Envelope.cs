@@ -22,7 +22,6 @@ namespace ShoppingMart.Domain.Base
 
         public Envelope()
         {
-
         }
 
         public Envelope(string message)

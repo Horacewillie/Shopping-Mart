@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace ShoppingMart.Domain
@@ -16,6 +17,8 @@ namespace ShoppingMart.Domain
         public string Description { get; set; }
 
         public Guid CategoryForeignKey { get; set; }
+        
+        [JsonIgnore]
         public Category Category { get; set; }
 
         public string ImageUrl { get; set; }
