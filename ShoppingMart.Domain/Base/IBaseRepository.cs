@@ -18,8 +18,6 @@ namespace ShoppingMart.Domain.Base
 
         Task<T> FindEntityAsync(params object[] keys);
 
-        //Task<int> SaveChanges(CancellationToken cancellationToken = default, bool clearChangeTracker = false);
-
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default, bool clearChangeTracker = false);
 
         void AddEntity(T entity);

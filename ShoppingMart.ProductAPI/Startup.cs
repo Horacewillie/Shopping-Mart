@@ -43,6 +43,7 @@ namespace ShoppingMart.ProductAPI
             services.AddSingleton(mapper);
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddScoped<ProductManager>();
+            services.AddScoped<CategoryManager>();
             InfastructureProvider.ConfigureServices(services, Configuration);
             services.AddWatchDogServices(opt =>
             {
@@ -61,12 +62,6 @@ namespace ShoppingMart.ProductAPI
             });
             services.AddLogging();
             services.AddSingleton(typeof(ILogger), typeof(Logger<Startup>));
-
-            var configuration = new ConfigurationBuilder()
-                    .AddUserSecrets<ShoppingMartConfig>()
-                    .Build();
-
-
         }
 
 

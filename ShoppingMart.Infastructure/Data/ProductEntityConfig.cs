@@ -14,6 +14,7 @@ namespace ShoppingMart.Infastructure.Data
         public void Configure(EntityTypeBuilder<Product> builder)
         {
             builder.HasKey(g => g.Id);
+
             builder.Property(g => g.Price)
                 .IsRequired()
                 .HasColumnType("decimal(18,4)");
@@ -23,5 +24,7 @@ namespace ShoppingMart.Infastructure.Data
             builder.Property(g => g.Description)
                 .IsRequired();
         }
+        
+        
     }
 }

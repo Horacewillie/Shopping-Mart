@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace ShoppingMart.Domain.Base
 {
@@ -14,6 +11,7 @@ namespace ShoppingMart.Domain.Base
         public ResultStatus Status { get; set; }
 
         public string Message { get; set; }
+        
         [JsonIgnore]
         public Dictionary<string, string> ErrorDictionary { get; }
 

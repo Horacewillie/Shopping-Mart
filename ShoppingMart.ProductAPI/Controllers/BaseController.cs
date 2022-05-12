@@ -32,11 +32,6 @@ namespace ShoppingMart.ProductAPI.Controllers
             return base.Ok(envelope);
         }
 
-        protected IActionResult Success<T>(Envelope<T> envelope)
-        {
-            return base.Ok(envelope);
-        }
-
         protected IActionResult Failure(Dictionary<string, string> errors, string message = "One or more errors occured")
         {
             return BadRequest(Envelope.Error(errors, message));

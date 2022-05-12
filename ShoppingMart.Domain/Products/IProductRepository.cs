@@ -1,6 +1,6 @@
 ﻿using ShoppingMart.Domain;
 using ShoppingMart.Domain.Base;
-using ShoppingMart.Domain.ViewModel;
+using ShoppingMart.Domain.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;

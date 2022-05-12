@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using ShoppingMart.Domain;
-using ShoppingMart.Domain.ViewModel;
+using ShoppingMart.Domain.ViewModels;
 using ShoppingMart.Domain.Products;
 using ShoppingMart.Infastructure.Data;
 using System;
@@ -14,12 +14,12 @@ namespace ShoppingMart.Infastructure.Repositories.Products
     public class ProductRepository : BaseRepository<Product>, IProductRepository
     {
 
-        protected readonly IMapper _mapper;
+        private readonly IMapper _mapper;
         public ProductRepository(ShoppingMartDbContext context, IMapper mapper) : base(context)
         {
             _mapper = mapper;
         }
-
+        
         public async Task<bool> DeleteProduct(Guid productId)
         {
             try
@@ -53,5 +53,6 @@ namespace ShoppingMart.Infastructure.Repositories.Products
             var productViewModel = _mapper.Map<List<ProductViewModel>>(productList);
             return productViewModel;
         }
+
     }
 }

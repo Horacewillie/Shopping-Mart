@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ShoppingMart.Domain.Categories;
+using ShoppingMart.Infastructure.Repositories.Categories;
 
 namespace ShoppingMart.Infastructure
 {
@@ -17,10 +19,12 @@ namespace ShoppingMart.Infastructure
             if (preferTransient)
             {
                 services.AddTransient<IProductRepository, ProductRepository>();
+                services.AddTransient<ICategoryRepository, CategoryRepository>();
             }
             else
             {
                 services.AddScoped<IProductRepository, ProductRepository>();
+                services.AddScoped<ICategoryRepository, CategoryRepository>();
             }
         }
     }
