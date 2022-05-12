@@ -1,11 +1,6 @@
 ﻿using AutoMapper;
-using ShoppingMart.Domain;
-using ShoppingMart.Domain.ViewModel;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using ShoppingMart.Domain.ViewModels;
+
 
 namespace ShoppingMart.Domain.Profiles
 {
@@ -16,6 +11,7 @@ namespace ShoppingMart.Domain.Profiles
             var mappingConfig = new MapperConfiguration(config =>
            {
                config.CreateMap<Product, ProductViewModel>().ReverseMap();
+               config.CreateMap<Category, CategoryViewModel>().ReverseMap();
            });
 
             return mappingConfig;

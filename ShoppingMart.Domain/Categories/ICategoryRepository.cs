@@ -9,6 +9,8 @@ namespace ShoppingMart.Domain.Categories
 {
     public interface ICategoryRepository : IBaseRepository<Category>
     {
+        Task<Category> GetCategoryById(Guid categoryId);
 
+        Task<Category> GetCategoryName(string name);
     }
 }

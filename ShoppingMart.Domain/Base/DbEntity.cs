@@ -9,8 +9,6 @@ using System.Threading.Tasks;
 
 namespace ShoppingMart.Domain.Base
 {
-
-   
     public abstract class DbEntity<T>
     {
 
@@ -30,11 +28,9 @@ namespace ShoppingMart.Domain.Base
 
         public DbEntity()
         {
-           
             DateCreated = DateTime.UtcNow;
             DateModified = DateTime.UtcNow;
             Deleted = false;
-
         }
     }
 

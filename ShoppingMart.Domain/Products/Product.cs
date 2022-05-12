@@ -17,7 +17,7 @@ namespace ShoppingMart.Domain
         public string Description { get; set; }
 
         public Guid CategoryForeignKey { get; set; }
-        
+
         [JsonIgnore]
         public Category Category { get; set; }
 
