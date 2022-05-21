@@ -36,7 +36,7 @@ namespace ShoppingMart.ProductAPI
 
             services.AddDbContext<ShoppingMartDbContext>(options =>
             {
-                options.UseSqlServer(GetShoppingMartDbConnection());
+                options.UseSqlServer(GetShoppingMartDbConnection()).EnableSensitiveDataLogging();
             });
 
             IMapper mapper = MappingConfig.RegisterMap().CreateMapper();

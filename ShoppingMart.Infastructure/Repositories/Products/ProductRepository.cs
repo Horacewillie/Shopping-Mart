@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ShoppingMart.Domain.Base;
 
 namespace ShoppingMart.Infastructure.Repositories.Products
 {
@@ -22,18 +23,12 @@ namespace ShoppingMart.Infastructure.Repositories.Products
         
         public async Task<bool> DeleteProduct(Guid productId)
         {
-            try
-            {
+         
                 Product product = await DbContext.Products.FirstOrDefaultAsync(p => p.Id == productId);
                 if (product is null) return false;
                 DbContext.Products.Remove(product);
                 await DbContext.SaveChangesAsync();
                 return true;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
         }
 
         public async Task<ProductViewModel> GetProduct(Guid productId)
@@ -42,6 +37,7 @@ namespace ShoppingMart.Infastructure.Repositories.Products
                 .Where(p => p.Id == productId && p.Deleted != true)
                 .Include(p => p.Category)
                 .FirstOrDefaultAsync();
+                
             return _mapper.Map<ProductViewModel>(product);
         }
 
@@ -49,7 +45,8 @@ namespace ShoppingMart.Infastructure.Repositories.Products
         {
             List<Product> productList = await DbContext.Products
                 .Where(p => p.Deleted != true)
-                .Include(p => p.Category).ToListAsync();
+                .Include(p => p.Category)
+                .ToListAsync();
             var productViewModel = _mapper.Map<List<ProductViewModel>>(productList);
             return productViewModel;
         }

@@ -1,4 +1,5 @@
 ﻿
+using System;
 using System.Text.Json.Serialization;
 using FluentValidation;
 using ShoppingMart.Domain.Base;
@@ -8,7 +9,9 @@ namespace ShoppingMart.Domain.ViewModels
 {
     public class ProductViewModel
     {
+            
             public string Name { get; set; }
+            public Guid Id { get; set; }
             public decimal Price { get; set; }
             public string Description { get; set; }
             public virtual CategoryViewModel Category { get; set; }
@@ -22,6 +25,7 @@ namespace ShoppingMart.Domain.ViewModels
             public ProductViewModel(Product product)
             {
                 if (product is null) return;
+                Id = product.Id;
                 Name = product.Name;
                 Price = product.Price;
                 ImageUrl = product.ImageUrl;

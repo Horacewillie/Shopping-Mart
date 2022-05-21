@@ -24,7 +24,6 @@ namespace ShoppingMart.Infastructure.Data
             builder.Property(g => g.Description)
                 .IsRequired();
         }
-        
-        
+
     }
 }

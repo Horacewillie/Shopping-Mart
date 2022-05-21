@@ -101,6 +101,27 @@ namespace ShoppingMart.ProductAPI.Controllers
                 return Failure($"An error occured | {ex.Message}");
             }
         }
-        
+
+        [HttpDelete("{productId}")]
+        [Produces(typeof(Envelope<bool>))]
+        public async Task<IActionResult> Delete(Guid productId)
+        {
+            try
+            {
+                var result = await _productManager.DeleteProduct(productId);
+                if (!result) return NotFoundError("Item not found for deletion!"); 
+                return Ok(result);
+            }
+            catch (ShoppingMartException sx)
+            {
+                return Failure((sx.Errors));
+            }
+            catch (Exception ex)
+            {
+                LogError("Product Deletion error occured", ex);
+                return Failure($"An error occured | {ex.Message}");
+            }
+        }
+
     }
 }

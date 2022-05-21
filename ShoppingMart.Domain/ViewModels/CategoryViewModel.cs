@@ -1,11 +1,13 @@
 using FluentValidation;
 using ShoppingMart.Domain.Base;
+using System;
 
 namespace ShoppingMart.Domain.ViewModels
 {
     public class CategoryViewModel
     {
         public string Name { get; set; }
+        //public Guid Id { get; set; }
         public void ValidateCategoryModel()
         {
             var validator = new InlineValidator<CategoryViewModel>();

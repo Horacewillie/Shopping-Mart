@@ -10,6 +10,8 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using ShoppingMart.Domain.Categories;
+using ShoppingMart.Infastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace ShoppingMart.Logic.Managers
 {
@@ -18,13 +20,16 @@ namespace ShoppingMart.Logic.Managers
         private readonly IProductRepository _productRepository;
         private readonly ICategoryRepository _categoryRepository;
         private readonly IMapper _mapper;
+        private readonly ShoppingMartDbContext _context;
+
         public ProductManager(IProductRepository productRepository,
             ICategoryRepository categoryRepository,
-            IMapper mapper)
+            IMapper mapper, ShoppingMartDbContext context)
         {
             _productRepository = productRepository;
             _categoryRepository = categoryRepository;
             _mapper = mapper;
+            _context = context;
         }
 
         public async Task<List<ProductViewModel>> GetProducts()
@@ -43,8 +48,19 @@ namespace ShoppingMart.Logic.Managers
         public  async Task<Envelope<ProductViewModel>> CreateProduct(ProductViewModel model)
         {
             model.ValidateProductModel();
-            var product = _mapper.Map<ProductViewModel, Product>(model);
+            var product = new Product
+            {
+                Name = model.Name,
+                Price = model.Price,
+                ImageUrl = model.ImageUrl,
+                Description = model.Description
+            };
+
+            _productRepository.AddEntity(product);
             var category = await _categoryRepository.GetCategoryName(model.Category.Name);
+            Console.WriteLine(_context.Entry(product).Context);
+            Console.WriteLine(_context.Entry(category).Context); 
+            //_context.Entry(product).State = EntityState.Added;
             category.Products.Add(product);
             await _categoryRepository.SaveChangesAsync();
             ProductViewModel savedProduct = _mapper.Map<Product, ProductViewModel>(product);
@@ -53,19 +69,24 @@ namespace ShoppingMart.Logic.Managers
 
         public async Task<Envelope<ProductViewModel>> UpdateProduct(ProductViewModel model)
         {
-            model.ValidateProductModel();
-            var product = new Product(new ProductViewModel
-            {
-                Name = model.Name,
-                Description = model.Description,
-                ImageUrl = model.ImageUrl,
-                Price = model.Price,
-                Category = model.Category
-            });
+            var product = await _productRepository.FindEntityAsync(model.Id);
+            if (product == null)
+                throw new ShoppingMartException("Product not found");
+            product.EditProduct(model);
+            var state = _context.Entry(product).State;
+            Console.WriteLine(state);
             _productRepository.UpdateEntity(product);
+            
             await _productRepository.SaveChangesAsync();
-            var updatedProduct = new ProductViewModel(product);
-            return Envelope.Ok(updatedProduct);
+            var productDto = new ProductViewModel(product);
+            return Envelope.Ok(productDto);
+        }
+
+        public async Task<bool> DeleteProduct(Guid productId)
+        {
+            bool deleted = await _productRepository.DeleteProduct(productId);
+            //_ = product ?? throw new ShoppingMartException("Product not found");
+            return deleted;
         }
     }
 }

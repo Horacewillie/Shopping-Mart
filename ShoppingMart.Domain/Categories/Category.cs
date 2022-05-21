@@ -25,6 +25,7 @@ namespace ShoppingMart.Domain
         {
             model.ValidateCategoryModel();
             Name = model.Name;
+           // Id = model.Id;
         }
     }
 }

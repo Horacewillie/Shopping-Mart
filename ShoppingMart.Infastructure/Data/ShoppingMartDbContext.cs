@@ -28,7 +28,11 @@ namespace ShoppingMart.Infastructure.Data
             modelbuilder.Entity<Product>()
                 .HasOne(c => c.Category)
                 .WithMany(p => p.Products)
-                .HasForeignKey(f => f.CategoryForeignKey);
+                .HasForeignKey(f => f.CategoryForeignKey)
+                .OnDelete(DeleteBehavior.Cascade);
+            //modelbuilder.Entity<Category>()
+            //    .HasMany(b => b.Products)
+            //    .WithOne(p => p.Category);
             modelbuilder.ApplyConfiguration(new ProductEntityConfig());
             modelbuilder.ApplyConfiguration(new CategoryEntityConfig());
         }

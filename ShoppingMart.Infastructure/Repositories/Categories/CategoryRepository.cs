@@ -32,6 +32,7 @@ namespace ShoppingMart.Infastructure.Repositories.Categories
             Category category = await DbContext.Categories.Where(c => c.Name == name)
                 .Include(c => c.Products)
                 .FirstOrDefaultAsync();
+            //Console.WriteLine(DbContext.Entry(category));
             return category;
         }
     }

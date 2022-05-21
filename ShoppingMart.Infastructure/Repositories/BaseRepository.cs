@@ -40,10 +40,13 @@ namespace ShoppingMart.Infastructure.Repositories
             return result;
         }
 
+        //Not neccessary.
+        //But better than calling detached on each entity
         private void ClearChangeTracker()
         {
             foreach (var entry in DbContext.ChangeTracker.Entries())
             {
+                Console.WriteLine(entry);
                 entry.State = Microsoft.EntityFrameworkCore.EntityState.Detached;
             }
         }

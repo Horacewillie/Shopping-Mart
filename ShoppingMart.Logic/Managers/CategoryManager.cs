@@ -24,13 +24,11 @@ namespace ShoppingMart.Logic.Managers
             var category = _mapper.Map<CategoryViewModel, Category>(model);
             _categoryRepository.AddEntity((category));
             await _categoryRepository.SaveChangesAsync();
-            //Manual Mapping(Na me know why)
-            var savedCategory = new Category(new CategoryViewModel
+            var savedCategory = new Category
             {
                 Name = model.Name
-            });
+            };
             return Envelope.Ok(savedCategory);
-            //return Envelope<CategoryViewModel>.Ok(model);
         }
     }
 }
